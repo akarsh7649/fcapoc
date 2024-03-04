@@ -10,11 +10,11 @@
            
           if(e.data.type==="SESSION_CREATED" && e.data.authenticated === false){
 			alert("True")
-            window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri="+encodeURIComponent('https://respectful-rat.static.app/temp2');
+            window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri="+encodeURIComponent(location.href);
           }
           // redirect to SSO login if the ServiceNow platform logs out from underneath the web client
           if(e.data.type==="SESSION_LOGGED_OUT")
-            window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri="+encodeURIComponent('https://respectful-rat.static.app/temp2');
+            window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri="+encodeURIComponent(location.href);
         });
       </script>
 	<title>Embedded VA</title>

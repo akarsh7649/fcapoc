@@ -3,19 +3,24 @@
 <head>
     <script>
         window.addEventListener("message", function(e) {
-           // redirect to SSO login if the web client logs in but is logged in as a guest user(unauthenticated)
-           alert("e.data: " + JSON.stringify(e.data));
-		   //alert("e.data.authenticated: " + e.data.authenticated);
-		   //alert("gs.getSession().isLoggedIn(): " + gs.getSession());
-           
-          if(e.data.type==="SESSION_CREATED" && e.data.authenticated === false){
-			alert("True")
-            window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri="+encodeURIComponent(location.href);
-          }
-          // redirect to SSO login if the ServiceNow platform logs out from underneath the web client
-          if(e.data.type==="SESSION_LOGGED_OUT")
-            window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri="+encodeURIComponent(location.href);
-        });
+	    console.log("Received message: ", e.data);
+	
+	    if (e.data.type === "SESSION_CREATED") {
+	        console.log("Authentication Status: ", e.data.authenticated);
+	        
+	        if (!e.data.authenticated) {
+	            console.log("User is not authenticated. Redirecting to login page.");
+	            window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri=" + encodeURIComponent(location.href);
+	        } else {
+	            console.log("User is authenticated.");
+	        }
+	    }
+	
+	    if (e.data.type === "SESSION_LOGGED_OUT") {
+	        console.log("User logged out. Redirecting to login page.");
+	        window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri=" + encodeURIComponent(location.href);
+	    }
+	});
       </script>
 	<title>Embedded VA</title>
     <style>

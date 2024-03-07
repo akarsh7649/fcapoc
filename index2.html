@@ -1,1 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.addEventListener("message", function(e) {
+           // redirect to SSO login if the web client logs in but is logged in as a guest user(unauthenticated)
+           alert("e.data: " + JSON.stringify(e.data));
+		   //alert("e.data.authenticated: " + e.data.authenticated);
+		   //alert("gs.getSession().isLoggedIn(): " + gs.getSession());
+           
+          if(e.data.type==="SESSION_CREATED" && e.data.authenticated === false){
+			alert("True")
+            window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri="+encodeURIComponent(location.href);
+          }
+          // redirect to SSO login if the ServiceNow platform logs out from underneath the web client
+          if(e.data.type==="SESSION_LOGGED_OUT")
+            window.location.href = "https://dev65984.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri="+encodeURIComponent(location.href);
+        });
+      </script>
+	<title>Embedded VA</title>
+    <style>
+        #chatBtn{
+            position: fixed;
+            bottom: 10px;
+            right: 10px; 
+            height: 80px;
+            width: 80px;  
+            font-size: 14px;
+            border-radius: 50%;
+            background-color: #1F8476;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+        #sn-va-web-client{
+            border: 0;
+            height: 600px;
+            width: 375px;
+            position: fixed;
+            bottom: 75px;
+            right: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div id="chat">
+        <iframe id="sn-va-web-client" title="Service Now Virtual Agent Client" src=""></iframe>
+      </div>
+    <button id="chatBtn">Chat</button>
+    </div>
+    <script type="text/javascript">
+        var btn = document.getElementById('chatBtn');
+        var iframe = document.getElementById("sn-va-web-client");
+        var src = ["https://dev65984.service-now.com/sn_va_web_client_app_embed.do",""]
+        var i = 0;
+        btn.addEventListener("click",togglePopup,false);
 
+        function togglePopup(e) {
+            iframe.src = src[i];
+            console.log('loading src', src[i]);
+            i = ((1 + i) % src.length);
+            };
+    </script>
+</body>
+</html>
